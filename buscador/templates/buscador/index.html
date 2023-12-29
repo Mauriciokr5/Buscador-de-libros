@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de libros</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .result-item:hover {
+            background-color: #bebebe;
+            cursor: pointer;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input {
+            width: 30vw;
+        }
+
+        .center-vertically {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .results p{
+            text-align: left;
+            padding: 10px;
+            margin: 0;
+        }
+        .btn{
+            margin: 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .search-input {
+                width: 80vw; /* Más ancho en dispositivos móviles */
+            }
+            .center-vertically {
+                padding: 20px; /* Más espacio en los lados en dispositivos móviles */
+            }
+            .d-flex{
+                flex-direction: column;
+                gap: 10px; 
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container center-vertically">
+        <div>
+            <div class="d-flex justify-content-center mb-2">
+                <select id="genero">
+                    <option value="">Género</option>
+                    <option value="Ensayo Literario">Ensayo Literario</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Gastronomía">Gastronomía</option>
+                    <option value="Ciencia Ficción">Ciencia Ficción</option>
+                    <option value="Arte">Arte</option>
+                    <option value="Cine">Cine</option>
+                    <option value="Filosofía">Filosofía</option>
+                    <option value="Psicologí­a Psicoanalisis Psiquiatra">Psicologí­a Psicoanalisis Psiquiatra</option>
+                    <option value="Terror y Suspenso">Terror y Suspenso</option>
+                    <option value="Desarrollo Humano">Desarrollo Humano</option>
+                    <option value="Fotografía">Fotografía</option>
+                    <option value="Negocios y Finanzas">Negocios y Finanzas</option>
+                    <option value="Salud y Ejercicio">Salud y Ejercicio</option>
+                    <option value="Viajes">Viajes</option>
+                </select>
+                  
+                <input type="text" class="form-control search-input" placeholder="Buscar...">
+                <button class="btn btn-primary search-button ">Buscar</button>
+            </div>
+
+            <div class="results text-center"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        const searchButton = document.querySelector('.search-button');
+        const resultsContainer = document.querySelector('.results');
+
+        searchButton.addEventListener('click', () => {
+            const searchInput = document.querySelector('.search-input').value;
+            const generoInput = document.querySelector('#genero').value;
+            const url = `buscar/?genero=${generoInput}&consulta=${searchInput}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    resultsContainer.innerHTML = '';
+                    data.forEach(item => {
+                        const title = item.Título;
+                        const titleElement = document.createElement('p');
+                        titleElement.classList.add('result-item');
+                        titleElement.textContent = title;
+                        titleElement.addEventListener('click', () => {
+                            window.location.href = `./${item.ISBN}`;
+                        });
+                        resultsContainer.appendChild(titleElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

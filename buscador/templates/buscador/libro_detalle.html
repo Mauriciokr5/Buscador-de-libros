@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{libro.Título}}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .book-container {
+            width: 80%;
+            margin:auto;
+        }
+        .card-img-top {
+            height: 300px; 
+            object-fit: cover;
+            width: 100%; 
+            background-color: #f0f0f0; 
+        }
+        .img_libro{
+            height:  100%; 
+            width: 100%;
+            background-color: #f0f0f0; 
+        }
+    </style>
+    <script>
+        function handleImageError(image) {
+            image.onerror = null; 
+            image.src = 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YmxhbmNvfGVufDB8fDB8fHww'; // Ruta a una imagen predeterminada
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="book-container">
+        <br><br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="book-details">
+                        <h1>{{libro.Título}}</h1>
+                        <hr>
+                        <p><strong>Autor:</strong> {{libro.Autor}}</p>
+                        <p><strong>Editorial:</strong> {{libro.Editorial}}</p>
+                        <p><strong>ISBN:</strong> {{libro.ISBN}}</p>
+                        <p><strong>Número de páginas:</strong> {{ libro.Número_de_Páginas }}</p>
+                        <p><strong>Fecha de Publicación:</strong> {{ libro.Fecha_de_Publicación }}</p>
+
+                    </div>
+                    <hr>
+                    <div class="book-synopsis">
+                        <h2>Sinopsis</h2>
+                        <p>{{libro.Sinopsis}}</p>
+                    </div>
+            
+                </div>
+                <div class="col-md-4">
+                    <div class="book-image">
+                        <img src="{{libro.Portada}}" alt="Book Image" class="img_libro">
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+        
+            
+        <hr>
+        <div class="book-related container">
+            <h2>Relacionados</h2>
+            <br><br>
+            <div class="row">
+                {% for recomendacion in recomendaciones %}
+                <div class="col-md-3">
+                    <a href="/{{recomendacion.ISBN}}">
+                        <img class="card-img-top" src="{{recomendacion.Portada}}" alt="Card image cap" onerror="handleImageError(this)">
+                        <div class="card-body">
+                        <h5 class="card-title">{{recomendacion.Título}}</h5>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
